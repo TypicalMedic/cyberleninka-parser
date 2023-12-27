@@ -1,0 +1,139 @@
+{% extends "literature_parser.html" %}
+{% block content %}
+<style>
+    .card-group [class*='col-'] {
+        float: none;
+        display: inline;
+    }
+</style>
+<script>
+</script>
+<div class="row justify-content-center mt-3">
+    <div class="col-9"
+        style="border-top: 2px; border-bottom: 0px; border-left: 0px; border-right: 0px; border-style: solid; border-color: #1A4462;">
+    </div>
+    <div class="col-5 row my-3 justify-content-center">
+        <p class="fw-bold col-12 text-center">{{dbres}}</p>
+        <a href="/export/{{fname}}.json" class="col btn btn-primary mx-2"
+            style="background-color: #3F88C5;" download>Экспортировать в
+            JSON</a>
+        <a href="/export/{{fname}}.csv" class="col btn btn-primary mx-2"
+            style="background-color: #3F88C5;" download>Экспортировать в
+            CSV</a>
+        <a href="/export/{{fname}}.xml" class="col btn btn-primary mx-2"
+            style="background-color: #3F88C5;" download>Экспортировать в
+            XML</a>
+        <a href="/export/{{fname}}.xlsx" class="col btn btn-primary mx-2"
+            style="background-color: #3F88C5;" download>Экспортировать в
+            XSLX</a>
+    </div>
+</div>
+{% for article in articles %}
+<div class="container">
+    <div class="row my-3">
+        <div class="card-group">
+            <div class="card" style="flex-grow: 6;">
+                <h4 class="card-header d-flex align-items-center justify-content-center">
+                    {{article.title}}
+                </h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            {% for author in article.authors %}
+                            <div class="col-auto mx-2 card card-body">
+                                <p class="card-text fst-italic">{{author}}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <p class="col-12 fs-4 fw-semibold">Аннотация</p>
+                            <p class="fs-5 fw-light">{{article.abstract}}</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <div class="d-grid">
+                            <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#info_{{loop.index}}" aria-expanded="false"
+                                aria-controls="info_{{loop.index}}" style="border-color: transparent; color:black">
+                                Подробнее...
+                            </button>
+                        </div>
+                        <div class="collapse" id="info_{{loop.index}}">
+                            <div class="card-body">
+                                <div class="row gy-3">
+                                    <p class="col-12 fs-5 fw-semibold mb-0">Ключевые слова:</p>
+                                    {% if article.keywords|length > 0 %}
+                                    {% for word in article.keywords %}
+                                    <div class="col-auto mx-2 card card-body">
+                                        <p class="card-text">{{word}}</p>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <p class="fs-5 fw-light text-danger">Отсутствуют</p>
+                                    {% endif %}
+                                </div>
+                                <div class="row my-2">
+                                    <p class="col-12 fs-5 fw-semibold mb-2">Журнал: <span
+                                            class="fs-5 fw-light">{{article.journal}}</span></p>
+                                </div>
+                                <div class="row my-2">
+                                    <p class="col-12 fs-5 fw-semibold mb-2">Область наук: <span
+                                            class="fs-5 fw-light">{{article.science_field}}</span></p>
+                                </div>
+                                <div class="row m-2">
+                                    <a class="btn btn-outline-light btn-sm" style="border-color: #3F88C5; color:black"
+                                        href="{{article.url}}">Ссылка на статью</a>
+                                </div>
+                                <div class="row">
+                                    <p class="col-12 fs-5 fw-semibold mb-0">Цитирование (ГОСТ)</p>
+                                    <p class="fs-5 fw-light fst-italic">{{article.gost_link}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="card " style="flex-grow: 1;">
+                <h4 class="card-header d-flex align-items-center justify-content-center">
+                    {{article.year}}
+                </h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex align-items-center justify-content-center">
+                        <div class="row justify-content-center">
+                            <i class="fa fa-eye col-auto" aria-hidden="true"></i>
+                            <p class="fs-5 fw-light col-auto">{{article.viewed}}</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center justify-content-center">
+                        <div class="row justify-content-center">
+                            <i class="fa fa-download col-auto" aria-hidden="true"></i>
+                            <p class="fs-5 fw-light col-auto">{{article.downloaded}}</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center justify-content-center">
+                        <div class="row justify-content-center">
+                            <i class="fa fa-thumbs-o-up col-auto" aria-hidden="true"></i>
+                            <p class="fs-5 fw-light col-auto">{{article.liked}}</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center justify-content-center">
+                        <div class="row justify-content-center">
+                            <i class="fa fa-thumbs-o-down col-auto" aria-hidden="true"></i>
+                            <p class="fs-5 fw-light col-auto">{{article.disliked}}</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center justify-content-center">
+                        <div class="row justify-content-center">
+                            <p class="fs-6 fw-medium col-auto">Лицензия</p>
+                            <p class="fs-6 fw-light col-auto">{{article.license}}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

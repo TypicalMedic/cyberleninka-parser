@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <title>Parse cyberleninka</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+<script>
+    function showLoadingSpinner() {
+        const newContent1 = document.createElement("i");
+        newContent1.className = "col-auto fa fa-spinner";
+        const newContent = document.createElement("div");
+        newContent.className = "col-12 text-center";
+        newContent.textContent = "Результаты загружаются...";
+        const loadDiv = document.getElementById("loading");
+        loadDiv.appendChild(newContent1);
+        loadDiv.appendChild(newContent);
+        document.getElementById("submit_btn").disabled = true;
+    }
+</script>
+
+<body>
+    <div class="row px-3 justify-content-center"
+        style="background-color: #3F88C5; border-bottom: 5px; border-top: 0px; border-style: solid; border-color: #1A4462;">
+        <div class="col-5 row my-2">
+            <h4 class="text-black col-auto p-0 my-0 ms-1" style="font-family: Haettenschweiler;">PARSER</h4>
+            <h4 class="text-white col-auto p-0 my-0" style="font-family: Haettenschweiler;">LENINKA</h4>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-5 row">
+            <p class="fs-3 fw-light col-12">Сбор информации о научных статьях с сайта <a href="https://cyberleninka.ru"
+                    class="text-reset">CYBERLENINKA</a></p>
+            <form action="results" id="search_params" class="col-12" onsubmit="showLoadingSpinner()">
+                <div class="row my-2 justify-content-center">
+                    <label class="col-auto col-form-label col-form-label-sm">Ваш запрос*:</label>
+                    <div class="col-sm-12 px-0">
+                        <input name="request" id="request" class="form-control form-control-sm" required
+                            value="{{search_text}}">
+                    </div>
+                </div>
+                <div class="row my-2 justify-content-center">
+                    <label class="col-auto col-form-label col-form-label-sm"
+                        title="Статей может быть меньше в результате поиска">Количество
+                        статей* (до 100) <i class="fa fa-question-circle-o"></i>:</label>
+                    <div class="col-sm-2">
+                        <input name="limit" id="limit" class="form-control form-control-sm" type="number" max="100"
+                            min="1" step="1" required value="{{limit}}">
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <button id="submit_btn" class="col-sm-12 btn btn-primary" style="background-color: #3F88C5;">Собрать!</button>
+                </div>
+            </form>
+        </div>
+        <div id="loading" class="row justify-content-center"></div>
+    </div>
+    {% block content %}{% endblock %}
+</body>
+
+</html>
